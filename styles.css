@@ -51,6 +51,7 @@ header, footer {
     text-overflow: ellipsis; 
     height: 3em;
     padding: 0 1em;
+    font-family: 'Press Start 2P', cursive;
 }
 
 .display p {
@@ -68,6 +69,7 @@ header, footer {
     cursor: pointer;
     border-radius: 10px;    
     border: none;
+    
 }
 
 .btn:hover {

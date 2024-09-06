@@ -36,10 +36,6 @@ let firstNumber= null;
 let secondNumber= null;
 let operator= null; //+ | - | * | /
 
-//FLAGS:
-let resetDisplay= false;
-let decimalAdded = false;
-
 //Display:
 const display= document.querySelector(".display p");
 
@@ -52,8 +48,6 @@ numberButtons.forEach((button) => {
             resetDisplay= false;
         }
         display.textContent += this.textContent;
-        //FLAG
-        decimalAdded = display.textContent.includes(".");
     })
 })
 
@@ -65,12 +59,13 @@ operatorButtons.forEach((button) => {
         operator= button.textContent;
         //reset:
         display.textContent= "";
-        decimalAdded = false;
     })
 })
 
 //Equals:
 const equalsButton= document.querySelector(".btn.equals");
+//FLAG:
+let resetDisplay= false;
 //Listener
 equalsButton.addEventListener("click", function() {
     secondNumber= parseFloat(display.textContent);
@@ -85,7 +80,6 @@ equalsButton.addEventListener("click", function() {
     operator = null;
     //RESET FLAG:
     resetDisplay= true;
-    decimalAdded = false;
 })
 
 //Clear display:
@@ -96,33 +90,43 @@ clear.addEventListener("click", function(){
     firstNumber = null;
     secondNumber = null;
     operator = null;
-    decimalAdded = false;
 })
 
 //Backspace:
 const backspace= document.querySelector(".btn.backspace");
 backspace.addEventListener("click", function() {
-    let currentChars = display.textContent;
+    let currentChars= display.textContent;
     if (currentChars.length > 0) {
-        currentChars = currentChars.slice(0, -1);
-        if (currentChars.endsWith(".")) {
-            decimalAdded = false;
-        }
+        currentChars= currentChars.slice(0,-1);
     }
-    display.textContent = currentChars;
+    display.textContent= currentChars;
 })
 
 //Plus/minus:
 const sign= document.querySelector(".btn.sign");
 sign.addEventListener("click", function() {
-
+    let currentValue= display.textContent;
+    if (currentValue) {
+        let newValue = parseFloat(currentValue) * -1;
+        display.textContent= "";
+        display.textContent = newValue;
+    }
 })
 
 //Decimal:
 const decimal= document.querySelector(".btn.decimal");
 decimal.addEventListener("click", function() {
-    if (!decimalAdded && display.textContent !== "") {
-        display.textContent += this.textContent;
-        decimalAdded = true;
+    if (resetDisplay) {
+        // If the display was reset, we want to append a decimal point to the existing result
+        if (!display.textContent.includes(".")) {
+            display.textContent += ".";
+        }
+        resetDisplay = false;
+    } else {
+        // If there's no decimal point yet, add one
+        if (!display.textContent.includes(".")) {
+            display.textContent += this.textContent;
+        }
     }
 })
+
